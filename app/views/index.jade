@@ -1,0 +1,38 @@
+extends layout
+
+block content
+  #inputModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+          h4#myModalLabel.modal-title Add a new post
+        form(action="/article/create", method="post", enctype='application/json')
+          .modal-body
+            .form-group
+              input#title.form-control(name='title',type='text', placeholder='Here goes a title...')
+            .form-group
+              input#subtitle.form-control(name='subtitle',type='text', placeholder='Here goes a little subtitle...')
+            .form-group
+              textarea.form-control(name='body',rows='3', placeholder='Aaand here you share your awesomeness!')
+          .modal-footer
+            button.btn.btn-default(type='button', data-dismiss="modal") Close
+            input.btn.btn-primary(type='submit', value='Post!')
+  div.jumbotron
+    h1="Hi! Hope you're having fun!"
+    p="Create an awesome post by clicking button below"
+    p
+      button(type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#inputModal")
+        | Add new post!
+
+  h2="Recent posts"
+  hr
+  div
+    each article in articles
+      div
+        a(href="/article/#{article.id}")
+          h3=article.title
+        h4.lead=article.subtitle
+        p=article.body
+        hr

@@ -1,0 +1,53 @@
+extends layout
+
+block content
+  #editModal.modal.fade(tabindex='-1', role='dialog')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+          h4.modal-title If you like, you can edit this post
+        form(action="/article/edit/#{article.id}", method="post")
+          .modal-body
+            .form-group
+              input.form-control(name='title' type='text' placeholder='Here goes a title...' value=article.title)
+            .form-group
+              input.form-control(name='subtitle',type='text', placeholder='Here goes a little subtitle...' value=article.subtitle)
+            .form-group
+              textarea.form-control(name='body',rows='5', placeholder='Aaand here you share your awesomeness!')
+                | #{article.body}
+          .modal-footer
+            button.btn.btn-default(type='button', data-dismiss="modal") Close
+            input.btn.btn-primary(type='submit', value='Post!')
+
+  #deleteModal.modal.fade(tabindex='-1', role='dialog')
+    .modal-dialog.modal-sm(role='document')
+      .modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal')
+            span(aria-hidden='true') ×
+          h4.modal-title Delete this post?
+          .modal-body
+            h5="Are you sure?"
+          .modal-footer
+            form(action="/article/delete/#{article.id}" method="post")
+              button.btn.btn-default(type='button', data-dismiss="modal") No...
+              input.btn.btn-danger(type='submit', value='Yes!')
+  div
+    div
+      .pull-left
+        a(href="/")
+          span.glyphicspan.glyphicon.glyphicon-menu-left(aria-hidden='true')
+          |   Return
+      .pull-right
+        a(href="" data-toggle="modal" data-target="#deleteModal")="Delete"
+        small=" | "
+        a(href="" data-toggle="modal" data-target="#editModal")="Edit"
+
+  br
+  hr
+  h1=article.title
+  if article.subtitle != null
+    p.lead=article.subtitle
+  p=article.body
